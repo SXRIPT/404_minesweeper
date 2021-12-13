@@ -22,7 +22,7 @@ public class Board {
      */
     public void randomBombs() {
         Random rand = new Random();
-        int i = 0;
+        int i = 0; // Anzahl der Bomben
         while(i < 40) {
             // row random
             int row = rand.nextInt((MAX - MIN) + 1) + MIN; //
