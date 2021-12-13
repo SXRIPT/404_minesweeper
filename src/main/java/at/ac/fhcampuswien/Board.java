@@ -3,11 +3,11 @@ package at.ac.fhcampuswien;
 import java.util.Random;
 
 public class Board {
-    private int[][] board; // trebuie modificat cu o clasa de contante
+    private int[][] board; // sollte mit eine Konstanten Klasse ergänzt/geändert
     private final int MAX = 16;
     private final int MIN = 0;
-    Board() { // constructor fara parametru
-        this.board = new int[16][16]; // matrix 16x16
+    Board() { // Konstruktor ohne Parameter
+        this.board = new int[16][16]; //
     }
 
     /*
@@ -24,12 +24,12 @@ public class Board {
         Random rand = new Random();
         int i = 0;
         while(i < 40) {
-            // O linie random
-            int row = rand.nextInt((MAX - MIN) + 1) + MIN; // numar random intre min si max
-            // o coloana random
-            int col = rand.nextInt((MAX - MIN) + 1) + MIN; // numar random intre min si max
+            // row random
+            int row = rand.nextInt((MAX - MIN) + 1) + MIN; //
+            // col random
+            int col = rand.nextInt((MAX - MIN) + 1) + MIN; //
 
-            if (board[row][col] != 9) { // asigura unicitate
+            if (board[row][col] != 9) { // falls es sich eine Zahl wiederholt, werden trotzdem 40 Zahlen
                 board[row][col] = 9;
                 i++;
             }
