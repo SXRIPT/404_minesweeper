@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-public class App /*extends Application*/ {
+public class App /*extends Application*/{
     public static void main(String[] args){
 
         Board board = new Board();
