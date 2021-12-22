@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
@@ -57,7 +58,7 @@ public class Board {
         else {
             for (int x = i - 1; x <= i + 1; x++) {
                 for (int y = j - 1; y <= j + 1; y++) {
-                    if (x >= 0  && x <= 15 && y >= 0 && y <=15 && board[x][y] == 9) {             //1.Teil stellt sicher das nicht außerhalb der Spielfelds geschaut wird, der 2.Teil ob es eine Bombe ist
+                    if (x >= 0  && x < MAX && y >= 0 && y < MAX && board[x][y] == 9) {             //1.Teil stellt sicher das nicht außerhalb der Spielfelds geschaut wird, der 2.Teil ob es eine Bombe ist
                         count++;
                     }
                 }
@@ -84,4 +85,6 @@ public class Board {
             }
         }
     }
+
+
 }
