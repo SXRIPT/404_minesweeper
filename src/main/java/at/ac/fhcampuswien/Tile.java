@@ -5,6 +5,7 @@ public class Tile {
     private int yAchse; // y position of the tiles
     private int bombsNearby; // number if bombs nearby
     boolean isBomb; // shows if the tile is a bomb tile
+    // ev noch ergänzen auf anzahl bomben angrenzend und i max/j max
 
     public Tile(int xAchse, int yAchse, boolean isBomb) { // constructor which needs x psoition, y position and if the tile is a bomb;
         this.xAchse = xAchse;

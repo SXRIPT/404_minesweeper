@@ -85,6 +85,18 @@ public class Board {
             }
         }
     }
+    public int getMAX(){ // returns the max value
+        return MAX;
+    }
+
+    public boolean isBomb(int i,int j){ // returns a boolean if the field is a bomb return true else return false
+        if(board[i][j] == 9){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
 
 
 }
