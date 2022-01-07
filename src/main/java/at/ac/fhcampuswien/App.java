@@ -1,11 +1,5 @@
 package at.ac.fhcampuswien;
 
-import javafx.application.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
-
 import java.util.ArrayList;
 
 public class App /*extends Application*/{
@@ -14,13 +8,15 @@ public class App /*extends Application*/{
 
     public static void main(String[] args){
         Board board = new Board();
-        board.showBoard();
+        //board.printIntBoard();
+        //System.out.println();
+        board.printTileBoard();
         //launch(args);
     }
 
 
-
-
+    //TODO habe die entsprechende Funktionalität in die Board-Klasse ausgelagert - Florian
+    /*
     public void fillTileBoard(Board btt){
 
             for(int i = 0; i < btt.getMAX();i++){
@@ -31,6 +27,7 @@ public class App /*extends Application*/{
             }
 
     }
+     */
 
     /*  @Override
         public void start(Stage primaryStage) {
