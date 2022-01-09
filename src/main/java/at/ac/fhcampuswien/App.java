@@ -7,10 +7,8 @@ public class App /*extends Application*/{
     private ArrayList<Tile> Tileboard = new ArrayList<Tile>();
 
     public static void main(String[] args){
-        Board board = new Board();
-        //board.printIntBoard();
-        //System.out.println();
-        board.printTileBoard();
+        Game game = new Game();
+        game.start();
         //launch(args);
     }
 

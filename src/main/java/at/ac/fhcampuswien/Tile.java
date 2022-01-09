@@ -5,6 +5,8 @@ public class Tile {
     private int yAchse; // y position of the tiles
     private int bombsNearby; // number if bombs nearby
     boolean isBomb; // shows if the tile is a bomb tile
+    boolean isRevealed = false;
+    boolean isFlagged = false;
     // ev noch ergänzen auf anzahl bomben angrenzend und i max/j max
 
     public Tile(int xAchse, int yAchse, boolean isBomb, int bombsNearby) { // constructor which needs x psoition, y position and if the tile is a bomb;
@@ -28,6 +30,19 @@ public class Tile {
 
     public boolean isBomb() {
         return isBomb;
+    }
+
+    public void setRevealed() {
+        Board.revealCount++;
+        isRevealed = true;
+    }
+
+    public void setFlagged() {
+        isFlagged = !isFlagged;
+    }
+
+    public boolean getFlagged() {
+        return isFlagged;
     }
 
     public int getNumericValue() {

@@ -8,7 +8,8 @@ public class Board {
     private Tile[][] tiles;
     private final int MAX = 16;
     private final int MIN = 0;
-
+    private final int BOMB_COUNT = 40;
+    protected static int revealCount = 0;
     //TODO x-y-Anordnung und Benennung vereinheitlichen
 
     Board() { // Konstruktor ohne Parameter
@@ -31,7 +32,7 @@ public class Board {
     private void randomBombs() {
         Random rand = new Random();
         int i = 0; // Anzahl der Bomben
-        while(i < 40) {
+        while(i < BOMB_COUNT) {
             // row random
             int row = rand.nextInt(MAX); //
             // col random
@@ -74,8 +75,8 @@ public class Board {
         return count;
     }
 
-    public int[][] getBoard() {
-        return board;
+    public Tile[][] getBoard() {
+        return tiles;
     }
 
     public void setBoard(int[][] board) {
@@ -94,10 +95,23 @@ public class Board {
         }
     }
 
-    public void printTileBoard() {
+    public void printGrid() {
+        System.out.print("     ");
+        for (int i = 0; i < tiles.length; i++) {
+            System.out.printf("%2d ", i);
+        }
+        System.out.println();
+        System.out.print("      ");
+        System.out.println("-  ".repeat(tiles.length));
+    }
+
+    public void printTileCheatBoard() {
+        printGrid();
         for(int y = 0; y < MAX;y++){
+            System.out.printf("%2d |  ", y);
             for(int x = 0; x < MAX;x++){
                 System.out.print(tiles[y][x].getNumericValue());
+
                 if((x + 1) % MAX == 0) {
                     System.out.print(System.lineSeparator());
                 } else {
@@ -105,6 +119,38 @@ public class Board {
                 }
             }
         }
+    }
+
+
+    public void printTileBoard() {
+        printGrid();
+        for(int y = 0; y < MAX;y++){
+            System.out.printf("%2d |  ", y);
+            for(int x = 0; x < MAX;x++){
+                if(tiles[y][x].isRevealed) {
+                    System.out.print(tiles[y][x].getNumericValue());
+                } else {
+                    System.out.print(tiles[y][x].isFlagged ? "F" : "X");
+                }
+                if((x + 1) % MAX == 0) {
+                    System.out.print(System.lineSeparator());
+                } else {
+                    System.out.print("  ");
+                }
+            }
+        }
+    }
+
+    public int getRevealCount() {
+        return revealCount;
+    }
+
+    public void increaseRevealCount() {
+        this.revealCount++;
+    }
+
+    public int getBOMB_COUNT() {
+        return BOMB_COUNT;
     }
 
     public int getMAX(){ // returns the max value
