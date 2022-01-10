@@ -1,72 +1,53 @@
 package at.ac.fhcampuswien;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
-    private int[][] board; // sollte mit eine Konstanten Klasse ergänzt/geändert
-    private Tile[][] tiles;
-    private final int MAX = 16;
-    private final int MIN = 0;
-    private final int BOMB_COUNT = 40;
-    protected static int revealCount = 0;
-    //TODO x-y-Anordnung und Benennung vereinheitlichen
+   static final Random RND = new Random();
 
-    Board() { // Konstruktor ohne Parameter
-        this.board = new int[MAX][MAX]; //
+    private final Tile[][] tiles;
+    private final int boardSize;
+    private final int bombCount;
+    private int revealCount = 0;
+
+    private static final int BOMB_VALUE = 9;
+
+
+    public Board(final int boardSize, final int bombCount) {
+        this.boardSize = boardSize;
+        this.bombCount = bombCount;
+        this.tiles = new Tile[boardSize][boardSize];
+
         randomBombs();
-        calculateBoard();
         setUpTileBoard();
     }
 
-    /*
-        9  0  0
-        0  9  0
-        0  0  0
-
-
-        i = 0 => row = 0, col = 0 => board[row][col]
-        i = 1 => row = 0, col = 0 => board[0][0]
-        i = 2 => row = 1; col = 1=> board[1][1]
-     */
     private void randomBombs() {
-        Random rand = new Random();
-        int i = 0; // Anzahl der Bomben
-        while(i < BOMB_COUNT) {
-            // row random
-            int row = rand.nextInt(MAX); //
-            // col random
-            int col = rand.nextInt(MAX); //
+        int bombsPlaced = 0;
+        while (bombsPlaced < bombCount) {
+            int row = RND.nextInt(boardSize);
+            int col = RND.nextInt(boardSize);
 
-            if (board[row][col] != 9) { // falls es sich eine Zahl wiederholt, werden trotzdem 40 Zahlen
-                board[row][col] = 9;
-                i++;
+            // Ensure that a bomb is not placed on a Tile with a bomb
+            if (tiles[row][col] == null || !tiles[row][col].isBomb()) {
+                tiles[row][col] = new Tile(true, BOMB_VALUE);
+                bombsPlaced++;
             }
         }
     }
 
-    private void calculateBoard(){
-
-        for(int i = 0; i < MAX ; i++){
-            for(int j = 0; j < MAX; j++){
-                board[i][j] = checkSurroundings(i,j);
-            }
-        }
-
-
-    }
-    // TODO: Dimensionen im Array waren vertauscht
-    //  war [x][y] vs. [y][x]/[row][col]  im restlichen code
-    //  habe es angepasst - Florian
-    private int checkSurroundings(int yPosition, int xPosition){                //Überprüft die anliegenden Felder auf Bomben
+    // Checks adjacent fields for bombs
+    private int checkSurroundings(final int yPosition, final int xPosition) {
         int count = 0;
-        if(board[yPosition][xPosition] == 9){                                   //Falls das Feld selber ein Bombe ist soll sie natürlich nicht überschrieben werden
-            count = 9;
-        }
-        else {
+        // If the Tile itself is a bomb it should not be overwritten
+        if (tiles[yPosition][xPosition] != null && tiles[yPosition][xPosition].isBomb()) {
+            count = BOMB_VALUE;
+        } else {
             for (int y = yPosition - 1; y <= yPosition + 1; y++) {
                 for (int x = xPosition - 1; x <= xPosition + 1; x++) {
-                    if (y >= 0  && y < MAX && x >= 0 && x < MAX && board[y][x] == 9) {             //1.Teil stellt sicher das nicht außerhalb der Spielfelds geschaut wird, der 2.Teil ob es eine Bombe ist
+                    //  Make sure not to look outside the grid and that the tile is a bomb
+                    if (y >= 0  && y < boardSize && x >= 0 && x < boardSize
+                            && tiles[y][x] != null && tiles[y][x].isBomb()) {
                         count++;
                     }
                 }
@@ -77,22 +58,6 @@ public class Board {
 
     public Tile[][] getBoard() {
         return tiles;
-    }
-
-    public void setBoard(int[][] board) {
-        this.board = board;
-    }
-
-    // TODO umbenannt um erkennbar zu machen von welchem Array geprintet wird - Florian
-    public void printIntBoard(){                                        //zeigt den befüllten Array in der Konsole für Probe Zwecke
-        for(int i = 0; i < MAX;i++){
-            for(int j = 0; j < MAX;j++){
-                System.out.print(board[i][j] + "  ");
-                if((j + 1)  % 16 == 0){
-                    System.out.println("");
-                }
-            }
-        }
     }
 
     public void printGrid() {
@@ -107,12 +72,12 @@ public class Board {
 
     public void printTileCheatBoard() {
         printGrid();
-        for(int y = 0; y < MAX;y++){
+        for (int y = 0; y < boardSize; y++) {
             System.out.printf("%2d |  ", y);
-            for(int x = 0; x < MAX;x++){
+            for (int x = 0; x < boardSize; x++) {
                 System.out.print(tiles[y][x].getNumericValue());
 
-                if((x + 1) % MAX == 0) {
+                if ((x + 1) % boardSize == 0) {
                     System.out.print(System.lineSeparator());
                 } else {
                     System.out.print("  ");
@@ -124,15 +89,15 @@ public class Board {
 
     public void printTileBoard() {
         printGrid();
-        for(int y = 0; y < MAX;y++){
+        for (int y = 0; y < boardSize; y++) {
             System.out.printf("%2d |  ", y);
-            for(int x = 0; x < MAX;x++){
-                if(tiles[y][x].isRevealed) {
+            for (int x = 0; x < boardSize; x++) {
+                if (tiles[y][x].isRevealed()) {
                     System.out.print(tiles[y][x].getNumericValue());
                 } else {
-                    System.out.print(tiles[y][x].isFlagged ? "F" : "X");
+                    System.out.print(tiles[y][x].isFlagged() ? "F" : "X");
                 }
-                if((x + 1) % MAX == 0) {
+                if ((x + 1) % boardSize == 0) {
                     System.out.print(System.lineSeparator());
                 } else {
                     System.out.print("  ");
@@ -149,28 +114,16 @@ public class Board {
         this.revealCount++;
     }
 
-    public int getBOMB_COUNT() {
-        return BOMB_COUNT;
-    }
-
-    public int getMAX(){ // returns the max value
-        return MAX;
-    }
-
-    public boolean isBomb(int y,int x){ // returns a boolean if the field is a bomb return true else return false
-        if(board[y][x] == 9){
-            return true;
-        }else {
-            return false;
-        }
-
+    public int getBombCount() {
+        return bombCount;
     }
 
     private void setUpTileBoard() {
-        tiles = new Tile[MAX][MAX];
-        for (int y = 0; y < MAX; y++) {
-            for (int x = 0; x < MAX; x++) {
-                tiles[y][x] = new Tile(x, y, isBomb(y, x), checkSurroundings(y, x));
+        for (int y = 0; y < boardSize; y++) {
+            for (int x = 0; x < boardSize; x++) {
+                if (tiles[y][x] == null) {
+                    tiles[y][x] = new Tile(false, checkSurroundings(y, x));
+                }
             }
         }
     }

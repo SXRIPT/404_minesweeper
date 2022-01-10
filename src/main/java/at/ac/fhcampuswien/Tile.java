@@ -1,75 +1,43 @@
 package at.ac.fhcampuswien;
 
 public class Tile {
-    private int xAchse; // x position of the tiles
-    private int yAchse; // y position of the tiles
-    private int bombsNearby; // number if bombs nearby
-    boolean isBomb; // shows if the tile is a bomb tile
-    boolean isRevealed = false;
-    boolean isFlagged = false;
-    // ev noch ergänzen auf anzahl bomben angrenzend und i max/j max
+    private final int bombsNearby;
+    private final boolean isBomb;
+    private boolean isRevealed = false;
+    private boolean isFlagged = false;
 
-    public Tile(int xAchse, int yAchse, boolean isBomb, int bombsNearby) { // constructor which needs x psoition, y position and if the tile is a bomb;
-        this.xAchse = xAchse;
-        this.yAchse = yAchse;
+    private static final int BOMB_VALUE = 9;
+
+    public Tile(final boolean isBomb, final int bombsNearby) {
         this.isBomb = isBomb;
         this.bombsNearby = bombsNearby;
-    }
-
-    public int getxAchse() {
-        return xAchse;
-    }
-
-    public int getyAchse() {
-        return yAchse;
-    }
-
-    public int getBombsNearby() {
-        return bombsNearby;
-    }
-
-    public boolean isBomb() {
-        return isBomb;
-    }
-
-    public void setRevealed() {
-        Board.revealCount++;
-        isRevealed = true;
     }
 
     public void setFlagged() {
         isFlagged = !isFlagged;
     }
 
-    public boolean getFlagged() {
+    public void setRevealed() {
+        isRevealed = true;
+    }
+
+    public boolean isBomb() {
+        return isBomb;
+    }
+
+    public boolean isRevealed() {
+        return isRevealed;
+    }
+
+    public boolean isFlagged() {
         return isFlagged;
     }
 
+    public int getBombsNearby() {
+        return bombsNearby;
+    }
+
     public int getNumericValue() {
-        if (isBomb) {
-            return 9;
-        } else {
-            return bombsNearby;
-        }
+        return isBomb ? BOMB_VALUE : bombsNearby;
     }
-
-    // TODO: gibt es irgendwelche Umstände unter denen wir Position, Bombenstatus und Zahl der umliegenden Bomben
-    //  nachträglich ändern? Wenn nein würde ich die Setter-Methoden löschen
-    /*
-    public void setxAchse(int xAchse) {
-        this.xAchse = xAchse;
-    }
-
-    public void setyAchse(int yAchse) {
-        this.yAchse = yAchse;
-    }
-
-    public void setBomb(boolean bomb) {
-        isBomb = bomb;
-    }
-
-    public void setBombsNearby(int bombsNearby) {
-        this.bombsNearby = bombsNearby;
-    }
-     */
 }
