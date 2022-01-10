@@ -1,5 +1,9 @@
 package at.ac.fhcampuswien;
 
+import com.sun.prism.shader.AlphaOne_Color_AlphaTest_Loader;
+
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Game {
@@ -82,24 +86,45 @@ public class Game {
         }
     }
 
+    private int inputValidation(String displayText) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print(displayText);
+        int number;
+        while (true) {
+            if(!scanner.hasNextInt()) {
+                scanner.nextLine();
+                System.out.println("Input is not a valid number");
+                System.out.print(displayText);
+            } else {
+                number = scanner.nextInt();
+                if(number < 0 || number >= MAX_SIZE) {
+                    System.out.println("Input is too big or too small");
+                    System.out.print(displayText);
+                } else {
+                    break;
+                }
+            }
+        }
+        return number;
+    }
+
+
     private void gameLogic() {
         Scanner scanner = new Scanner(System.in);
+        String[] options = {"a", "b"};
         while (true) {
 
             System.out.println("a) Feld aufdecken");
             System.out.println("b) Flag setzen");
             String option = "";
 
-            System.out.print("Pick a option: ");
-            if(scanner.hasNextLine()) option = scanner.nextLine();
+            while(!Arrays.asList(options).contains(option)) {
+                System.out.print("Pick a option: ");
+                if(scanner.hasNextLine()) option = scanner.nextLine();
+            }
 
-            System.out.print("Input X: ");
-            int x = scanner.nextInt();
-            scanner.nextLine();
-
-            System.out.print("Input Y: ");
-            int y = scanner.nextInt();
-            scanner.nextLine();
+            int x = inputValidation("Input X: ");
+            int y = inputValidation("Input Y: ");
 
 
             Tile tile = board.getBoard()[y][x];
