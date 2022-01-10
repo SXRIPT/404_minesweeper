@@ -88,9 +88,10 @@ public class Game {
 
             System.out.println("a) Feld aufdecken");
             System.out.println("b) Flag setzen");
+            String option = "";
 
             System.out.print("Pick a option: ");
-            String option = scanner.nextLine();
+            if(scanner.hasNextLine()) option = scanner.nextLine();
 
             System.out.print("Input X: ");
             int x = scanner.nextInt();
@@ -99,6 +100,7 @@ public class Game {
             System.out.print("Input Y: ");
             int y = scanner.nextInt();
             scanner.nextLine();
+
 
             Tile tile = board.getBoard()[y][x];
             switch (option) {
