@@ -13,4 +13,4 @@ https://www.bernhard-gaul.de/spiele/minesweeper/minesweeper-spielregel.html
 #### Funktionalität
 
 Felder können nur markiert oder nicht markiert werden. Es ist keine Fragezeichen Setzung möglich.
-Es wird an Anfang das aufgedeckte Board angezeigt für Überprüfungszwecke. Zum ausblenden muss die Funktion board.printTileCheatBoard(); (Klasse Game - Zeile 92) asukommentiert werden
+Es wird an Anfang das aufgedeckte Board angezeigt für Überprüfungszwecke. Zum ausblenden muss die Funktion board.printTileCheatBoard(); (Klasse Game - Zeile 92) auskommentiert werden
