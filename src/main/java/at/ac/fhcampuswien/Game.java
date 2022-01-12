@@ -2,9 +2,7 @@ package at.ac.fhcampuswien;
 
 import com.sun.prism.shader.AlphaOne_Color_AlphaTest_Loader;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
     private final Board board;
@@ -73,7 +71,7 @@ public class Game {
 
         if (bombsNearBy == 0 && !tile.isRevealed() && !tile.isFlagged()) {
             revealSurroundingZeros(x, y);
-        } else if (bombsNearBy == BOMB_VALUE) {
+        } else if (bombsNearBy == BOMB_VALUE && !tile.isFlagged()) {
             printLoseScreen();
             lost = true;
         } else {
