@@ -1,7 +1,5 @@
 package at.ac.fhcampuswien;
 
-import com.sun.prism.shader.AlphaOne_Color_AlphaTest_Loader;
-
 import java.util.*;
 
 public class Game {
