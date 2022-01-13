@@ -10,19 +10,16 @@ public class Board {
     private final int bombCount;
     private int revealCount = 0;
 
-    private static final int BOMB_VALUE = 9;
-
-
     public Board(final int boardSize, final int bombCount) {
         this.boardSize = boardSize;
         this.bombCount = bombCount;
         this.tiles = new Tile[boardSize][boardSize];
 
-        randomBombs();
-        setUpTileBoard();
+        placeRandomBombs();
+        fillBoard();
     }
 
-    private void randomBombs() {
+    private void placeRandomBombs() {
         int bombsPlaced = 0;
         while (bombsPlaced < bombCount) {
             int row = RND.nextInt(boardSize);
@@ -30,8 +27,18 @@ public class Board {
 
             // Ensure that a bomb is not placed on a Tile with a bomb
             if (tiles[row][col] == null || !tiles[row][col].isBomb()) {
-                tiles[row][col] = new Tile(true, BOMB_VALUE);
+                tiles[row][col] = new Tile(true, Tile.BOMB_VALUE);
                 bombsPlaced++;
+            }
+        }
+    }
+
+    private void fillBoard() {
+        for (int y = 0; y < boardSize; y++) {
+            for (int x = 0; x < boardSize; x++) {
+                if (tiles[y][x] == null) {
+                    tiles[y][x] = new Tile(false, checkSurroundings(y, x));
+                }
             }
         }
     }
@@ -41,7 +48,7 @@ public class Board {
         int count = 0;
         // If the Tile itself is a bomb it should not be overwritten
         if (tiles[yPosition][xPosition] != null && tiles[yPosition][xPosition].isBomb()) {
-            count = BOMB_VALUE;
+            count = Tile.BOMB_VALUE;
         } else {
             for (int y = yPosition - 1; y <= yPosition + 1; y++) {
                 for (int x = xPosition - 1; x <= xPosition + 1; x++) {
@@ -60,6 +67,19 @@ public class Board {
         return tiles;
     }
 
+    public int getRevealCount() {
+        return revealCount;
+    }
+
+    public int getBombCount() {
+        return bombCount;
+    }
+
+    public void increaseRevealCount() {
+        this.revealCount++;
+    }
+
+
     public void printGrid() {
         System.out.print("     ");
         for (int i = 0; i < tiles.length; i++) {
@@ -75,17 +95,12 @@ public class Board {
         for (int y = 0; y < boardSize; y++) {
             System.out.printf("%2d |  ", y);
             for (int x = 0; x < boardSize; x++) {
-                System.out.print(tiles[y][x].getNumericValue());
+                System.out.print(tiles[y][x].getBombsNearby());
 
-                if ((x + 1) % boardSize == 0) {
-                    System.out.print(System.lineSeparator());
-                } else {
-                    System.out.print("  ");
-                }
+                System.out.print((x + 1) % boardSize == 0 ? System.lineSeparator() : "  ");
             }
         }
     }
-
 
     public void printTileBoard() {
         printGrid();
@@ -93,40 +108,13 @@ public class Board {
             System.out.printf("%2d |  ", y);
             for (int x = 0; x < boardSize; x++) {
                 if (tiles[y][x].isRevealed()) {
-                    System.out.print(tiles[y][x].getNumericValue());
+                    System.out.print(tiles[y][x].getBombsNearby());
                 } else {
                     System.out.print(tiles[y][x].isFlagged() ? "F" : "X");
                 }
-                if ((x + 1) % boardSize == 0) {
-                    System.out.print(System.lineSeparator());
-                } else {
-                    System.out.print("  ");
-                }
+
+                System.out.print((x + 1) % boardSize == 0 ? System.lineSeparator() : "  ");
             }
         }
     }
-
-    public int getRevealCount() {
-        return revealCount;
-    }
-
-    public void increaseRevealCount() {
-        this.revealCount++;
-    }
-
-    public int getBombCount() {
-        return bombCount;
-    }
-
-    private void setUpTileBoard() {
-        for (int y = 0; y < boardSize; y++) {
-            for (int x = 0; x < boardSize; x++) {
-                if (tiles[y][x] == null) {
-                    tiles[y][x] = new Tile(false, checkSurroundings(y, x));
-                }
-            }
-        }
-    }
-
-
 }

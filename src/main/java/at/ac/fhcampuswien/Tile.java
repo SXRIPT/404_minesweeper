@@ -6,7 +6,7 @@ public class Tile {
     private boolean isRevealed = false;
     private boolean isFlagged = false;
 
-    private static final int BOMB_VALUE = 9;
+    protected static final int BOMB_VALUE = 9;
 
     public Tile(final boolean isBomb, final int bombsNearby) {
         this.isBomb = isBomb;
@@ -35,9 +35,5 @@ public class Tile {
 
     public int getBombsNearby() {
         return bombsNearby;
-    }
-
-    public int getNumericValue() {
-        return isBomb ? BOMB_VALUE : bombsNearby;
     }
 }
