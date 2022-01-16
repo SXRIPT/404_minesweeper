@@ -27,7 +27,7 @@ public class Board {
 
             // Ensure that a bomb is not placed on a Tile with a bomb
             if (tiles[row][col] == null || !tiles[row][col].isBomb()) {
-                tiles[row][col] = new Tile(true, Tile.BOMB_VALUE);
+                tiles[row][col] = new Tile(col, row, true, Tile.BOMB_VALUE);
                 bombsPlaced++;
             }
         }
@@ -37,7 +37,7 @@ public class Board {
         for (int y = 0; y < boardSize; y++) {
             for (int x = 0; x < boardSize; x++) {
                 if (tiles[y][x] == null) {
-                    tiles[y][x] = new Tile(false, checkSurroundings(y, x));
+                    tiles[y][x] = new Tile(x, y,false, checkSurroundings(y, x));
                 }
             }
         }
@@ -90,6 +90,10 @@ public class Board {
         System.out.println("-  ".repeat(tiles.length));
     }
 
+    /**
+     * Prints the Board from the array of tiles with all tiles revealed
+     * (for testing and debugging)
+     */
     public void printTileCheatBoard() {
         printGrid();
         for (int y = 0; y < boardSize; y++) {
@@ -101,7 +105,9 @@ public class Board {
             }
         }
     }
-
+    /**
+     * Prints the Board from the array of tiles with unrevealed tiles covered
+     */
     public void printTileBoard() {
         printGrid();
         for (int y = 0; y < boardSize; y++) {
