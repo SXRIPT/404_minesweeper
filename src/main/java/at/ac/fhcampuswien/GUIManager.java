@@ -39,18 +39,18 @@ public class GUIManager {
     }
 
     private void loadImages() throws FileNotFoundException {
-        InputStream stream = new FileInputStream("D:\\Projekte\\MineSweeper\\unrevealed.png");
+        InputStream stream = new FileInputStream("src/main/resources/graphics/unrevealed.png");
         graphics.put("unrevealed", new Image(stream));
-        stream = new FileInputStream("D:\\Projekte\\MineSweeper\\empty.png");
+        stream = new FileInputStream("src/main/resources/graphics/empty.png");
         graphics.put("empty", new Image(stream));
-        stream = new FileInputStream("D:\\Projekte\\MineSweeper\\bomb.png");
+        stream = new FileInputStream("src/main/resources/graphics/bomb.png");
         graphics.put("bomb", new Image(stream));
-        stream = new FileInputStream("D:\\Projekte\\MineSweeper\\flag.png");
+        stream = new FileInputStream("src/main/resources/graphics/flag.png");
         graphics.put("flag", new Image(stream));
-        stream = new FileInputStream("D:\\Projekte\\MineSweeper\\x.png");
+        stream = new FileInputStream("src/main/resources/graphics/x.png");
         graphics.put("x", new Image(stream));
         for (int i = 1; i < 8; i++) {
-            stream = new FileInputStream("D:\\Projekte\\MineSweeper\\" + i + ".png");
+            stream = new FileInputStream("src/main/resources/graphics/" + i + ".png");
             graphics.put(Integer.toString(i), new Image(stream));
         }
     }

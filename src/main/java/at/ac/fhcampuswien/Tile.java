@@ -3,6 +3,7 @@ package at.ac.fhcampuswien;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 public class Tile {
@@ -27,10 +28,16 @@ public class Tile {
 
     public void setFlagged() {
         isFlagged = !isFlagged;
+        if (isFlagged) {
+            imageView.setImage(GUIManager.getInstance().getImage("flag"));
+        } else {
+            imageView.setImage(GUIManager.getInstance().getImage("unrevealed"));
+        }
     }
 
     public void setRevealed() {
         isRevealed = true;
+        imageView.setImage(revealedImage);
     }
 
     public boolean isBomb() {
@@ -64,7 +71,11 @@ public class Tile {
 
             @Override
             public void handle(MouseEvent event) {
-                ((ImageView) event.getTarget()).setImage(revealedImage);
+                if (event.getButton().equals(MouseButton.SECONDARY) && !isRevealed) {
+                    setFlagged();
+                } else {
+                    setRevealed();
+                }
 
                 event.consume();
             }
