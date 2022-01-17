@@ -5,7 +5,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;

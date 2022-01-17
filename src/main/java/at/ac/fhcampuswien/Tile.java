@@ -5,17 +5,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
-public class Tile {
+import javax.swing.*;
+import java.awt.*;
+
+public class Tile extends ImageView {
     private final int bombsNearby;
     private final boolean isBomb;
     private boolean isRevealed = false;
     private boolean isFlagged = false;
     private final int xPosition;
     private final int yPosition;
-    private ImageView imageView;
     private Image revealedImage;
-
     protected static final int BOMB_VALUE = 9;
 
     public Tile(final int xPosition, final int yPosition, final boolean isBomb, final int bombsNearby) {
@@ -29,15 +31,15 @@ public class Tile {
     public void setFlagged() {
         isFlagged = !isFlagged;
         if (isFlagged) {
-            imageView.setImage(GUIManager.getInstance().getImage("flag"));
+            this.setImage(GUIManager.getInstance().getImage("flag"));
         } else {
-            imageView.setImage(GUIManager.getInstance().getImage("unrevealed"));
+            this.setImage(GUIManager.getInstance().getImage("unrevealed"));
         }
     }
 
     public void setRevealed() {
         isRevealed = true;
-        imageView.setImage(revealedImage);
+        this.setImage(revealedImage);
     }
 
     public boolean isBomb() {
@@ -56,6 +58,14 @@ public class Tile {
         return bombsNearby;
     }
 
+    public int getxPosition() {
+        return xPosition;
+    }
+
+    public int getyPosition() {
+        return yPosition;
+    }
+
     private void setUpTile() {
         if (isBomb) {
             revealedImage = GUIManager.getInstance().getImage("bomb");
@@ -65,23 +75,10 @@ public class Tile {
             revealedImage = GUIManager.getInstance().getImage(Integer.toString(bombsNearby));
         }
 
+        this.setImage(GUIManager.getInstance().getImage("unrevealed"));
 
-        imageView = new ImageView(GUIManager.getInstance().getImage("unrevealed"));
-        imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton().equals(MouseButton.SECONDARY) && !isRevealed) {
-                    setFlagged();
-                } else {
-                    setRevealed();
-                }
-
-                event.consume();
-            }
-        });
-        imageView.setX(xPosition * 32);
-        imageView.setY(yPosition * 32);
-        GUIManager.getInstance().getAnchorPane().getChildren().add(imageView);
+        this.setX(xPosition * 32);
+        this.setY(yPosition * 32);
+        GUIManager.getInstance().getAnchorPane().getChildren().add(this);
     }
 }

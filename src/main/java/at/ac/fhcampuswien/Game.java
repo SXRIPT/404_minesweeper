@@ -1,5 +1,8 @@
 package at.ac.fhcampuswien;
 
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +19,15 @@ public class Game {
     public Game(final int boardSize, final int bombCount) {
         this.board = new Board(boardSize, bombCount);
         MAX_SIZE = boardSize;
+        addOnClickToTiles();
+    }
+
+    private void addOnClickToTiles() {
+        for (int row = 0; row < board.getBoard().length; row++) {
+            for (int col = 0; col < board.getBoard()[row].length; col++) {
+                board.getBoard()[row][col].setOnMouseClicked(this::handleReveal);
+            }
+        }
     }
 
     public void start() {
@@ -58,13 +70,24 @@ public class Game {
         return x < 0 || x >= MAX_SIZE || y < 0 || y >= MAX_SIZE;
     }
 
-    private void handleReveal(final Tile tile, final int x, final int y) {
+    private void handleReveal(MouseEvent event) {
+        if (!(event.getSource() instanceof Tile)) return;
+
+        Tile tile = (Tile) event.getSource();
+        // final int x, final int y
         int bombsNearBy = tile.getBombsNearby();
 
+        if (event.getButton().equals(MouseButton.SECONDARY) && !tile.isRevealed()) {
+            tile.setFlagged();
+            return;
+        }
+
         if (bombsNearBy == 0 && !tile.isRevealed() && !tile.isFlagged()) {
-            revealZeroFields(x, y);
+            revealZeroFields(tile.getxPosition(), tile.getyPosition());
         } else if (bombsNearBy == Tile.BOMB_VALUE && !tile.isFlagged()) {
             printLoseScreen();
+            tile.setRevealed();
+
             lost = true;
         } else {
             if (!tile.isFlagged() && !tile.isRevealed()) {
@@ -120,7 +143,7 @@ public class Game {
             Tile tile = board.getBoard()[y][x];
             switch (option) {
                 case "a":
-                    handleReveal(tile, x, y);
+                    //handleReveal(tile);
                     return;
                 case "b":
                     if (!tile.isRevealed()) {

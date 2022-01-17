@@ -15,8 +15,6 @@ import java.io.InputStream;
 
 public class App extends Application {
 
-
-
     public static void main(String[] args){
         //Game game = new Game(16, 40);
         launch();
@@ -25,9 +23,9 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage = GUIManager.getInstance().getStage();
-        Game game = new Game(16, 40);
+        new Game(32, 40);
 
         primaryStage.show();
     }
