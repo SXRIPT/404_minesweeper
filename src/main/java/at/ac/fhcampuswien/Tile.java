@@ -1,14 +1,7 @@
 package at.ac.fhcampuswien;
 
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class Tile extends ImageView {
     private final int bombsNearby;
@@ -79,6 +72,7 @@ public class Tile extends ImageView {
 
         this.setX(xPosition * 32);
         this.setY(yPosition * 32);
+
         GUIManager.getInstance().getAnchorPane().getChildren().add(this);
     }
 }

@@ -1,17 +1,8 @@
 package at.ac.fhcampuswien;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 public class App extends Application {
 
@@ -22,10 +13,17 @@ public class App extends Application {
         //launch(args);
     }
 
+    public static void newGame() {
+        Stage primaryStage = GUIManager.getInstance().getStage();
+        new Game(24, 40);
+
+        primaryStage.show();
+    }
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage = GUIManager.getInstance().getStage();
-        new Game(32, 40);
+        new Game(24, 40);
 
         primaryStage.show();
     }

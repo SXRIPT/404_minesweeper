@@ -34,6 +34,7 @@ public class GUIManager {
         anchorPane = new AnchorPane();
         scene = new Scene(anchorPane, WIDTH, HEIGHT);
         stage = new Stage();
+        // stage.setResizable(false);
         stage.setScene(scene);
     }
 
@@ -48,6 +49,10 @@ public class GUIManager {
         graphics.put("flag", new Image(stream));
         stream = new FileInputStream("src/main/resources/graphics/x.png");
         graphics.put("x", new Image(stream));
+        stream = new FileInputStream("src/main/resources/graphics/won.png");
+        graphics.put("won", new Image(stream));
+        stream = new FileInputStream("src/main/resources/graphics/lose.png");
+        graphics.put("lose", new Image(stream));
         for (int i = 1; i < 8; i++) {
             stream = new FileInputStream("src/main/resources/graphics/" + i + ".png");
             graphics.put(Integer.toString(i), new Image(stream));
@@ -63,6 +68,15 @@ public class GUIManager {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public void setStage(Stage stage) { this.stage = stage; }
+
+    public void reset() {
+        anchorPane = new AnchorPane();
+        scene = new Scene(anchorPane, WIDTH, HEIGHT);
+        stage = new Stage();
+        stage.setScene(scene);
     }
 
     public AnchorPane getAnchorPane() {

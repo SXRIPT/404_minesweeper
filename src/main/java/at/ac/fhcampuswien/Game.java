@@ -1,8 +1,15 @@
 package at.ac.fhcampuswien;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -33,7 +40,7 @@ public class Game {
     public void start() {
         board.printTileCheatBoard();
         System.out.println();
-        while (!lost && hasNotWon()) {
+        while (!lost && hasWon()) {
             if (!error) {
                 board.printTileBoard();
             } else {
@@ -46,7 +53,7 @@ public class Game {
         }
     }
 
-    private boolean hasNotWon() { return board.getRevealCount() + board.getBombCount() != MAX_SIZE * MAX_SIZE; }
+    private boolean hasWon() { return board.getRevealCount() + board.getBombCount() == MAX_SIZE * MAX_SIZE; }
 
     private void revealTile(final Tile tile) {
         if (!tile.isRevealed())  board.increaseRevealCount();
@@ -85,7 +92,24 @@ public class Game {
         if (bombsNearBy == 0 && !tile.isRevealed() && !tile.isFlagged()) {
             revealZeroFields(tile.getxPosition(), tile.getyPosition());
         } else if (bombsNearBy == Tile.BOMB_VALUE && !tile.isFlagged()) {
-            printLoseScreen();
+            ImageView imageView = new ImageView();
+            imageView.setImage(GUIManager.getInstance().getImage("lose"));
+
+            Button button = new Button();
+            button.setText("Restart");
+
+            button.setOnAction(eventButtonClick -> {
+                GUIManager.getInstance().getStage().close();
+                GUIManager.getInstance().reset();
+                App.newGame();
+
+            });
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.getChildren().add(imageView);
+            anchorPane.getChildren().add(button);
+
+            Scene scene = new Scene(anchorPane, 288, 288);
+            GUIManager.getInstance().getStage().setScene(scene);
             tile.setRevealed();
 
             lost = true;
@@ -96,6 +120,29 @@ public class Game {
                 System.out.println("Tile is flagged or revealed");
                 error = true;
             }
+        }
+
+        if(hasWon()){
+            ImageView imageView = new ImageView();
+            imageView.setImage(GUIManager.getInstance().getImage("won"));
+
+            Button button = new Button();
+            button.setText("Restart");
+
+            button.setOnAction(eventButtonClick -> {
+                GUIManager.getInstance().getStage().close();
+                GUIManager.getInstance().reset();
+                App.newGame();
+
+            });
+
+            AnchorPane anchorPane = new AnchorPane();
+            anchorPane.getChildren().add(imageView);
+            anchorPane.getChildren().add(button);
+
+            Scene scene = new Scene(anchorPane, 288, 288);
+
+            GUIManager.getInstance().getStage().setScene(scene);
         }
     }
 
