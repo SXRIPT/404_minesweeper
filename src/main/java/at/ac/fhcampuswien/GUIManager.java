@@ -21,7 +21,7 @@ public class GUIManager {
 
     /**
      * private constructor, only to be called by the getInstance method when it itself is called the first time
-     * -> Singleton class - we don't want mor than one GUIManager object to exist at any time.
+     * -> Singleton class - we don't want more than one GUIManager object to exist at any time.
      */
     private GUIManager() {
         graphics = new HashMap<>();

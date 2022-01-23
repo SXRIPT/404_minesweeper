@@ -16,7 +16,7 @@ public class App extends Application {
     public static void newGame() {
         Stage primaryStage = GUIManager.getInstance().getStage();
         new Game(24, 40);
-
+        primaryStage.setTitle("404_Minesweeper");
         primaryStage.show();
     }
 
@@ -25,6 +25,7 @@ public class App extends Application {
         primaryStage = GUIManager.getInstance().getStage();
         new Game(24, 40);
 
+        primaryStage.setTitle("404_Minesweeper");
         primaryStage.show();
     }
 }
