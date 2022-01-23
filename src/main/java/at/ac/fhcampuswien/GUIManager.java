@@ -1,6 +1,8 @@
 package at.ac.fhcampuswien;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -13,11 +15,14 @@ import java.util.HashMap;
 public class GUIManager {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
+    private static int boardSize;
+    private static int bombCount;
     private AnchorPane anchorPane;
     private Stage stage;
     private Scene scene;
     private static GUIManager instance;
     private HashMap<String, Image> graphics;
+
 
     /**
      * private constructor, only to be called by the getInstance method when it itself is called the first time
@@ -91,4 +96,70 @@ public class GUIManager {
             return graphics.get("x");
         }
     }
+    public static void startUp(){
+        Button startButton = new Button();
+        startButton.setText("Start");
+
+        ChoiceBox difficultyCB = new ChoiceBox();
+        ChoiceBox sizeCB = new ChoiceBox();
+
+
+        String[] sizesForCB = {"small", "medium", "large"};
+
+        String[] difficultiesForCB = {"easy", "normal", "hard"};
+
+        sizeCB.getItems().addAll(sizesForCB);
+
+        difficultyCB.getItems().addAll(difficultiesForCB);
+
+        startButton.setOnAction(eventButtonClick -> {
+
+                if(sizeCB.getValue() == "small") setBoardSize(10);
+                else if(sizeCB.getValue() == "large") setBoardSize(25);
+                else setBoardSize(18);
+
+                if (sizeCB.getValue() == "small"){
+                    if(difficultyCB.getValue() == "easy") setBombCount(12);
+                    else if(difficultyCB.getValue() == "hard") setBombCount(20);
+                    else setBombCount(15);
+                } else if (sizeCB.getValue() == "large"){
+                    if(difficultyCB.getValue() == "easy") setBombCount(78);
+                    else if(difficultyCB.getValue() == "hard") setBombCount(125);
+                    else setBombCount(93);
+                }else{
+                    if(difficultyCB.getValue() == "easy") setBombCount(40);
+                    else if(difficultyCB.getValue() == "hard") setBombCount(65);
+                    else setBombCount(49);
+                }
+
+            GUIManager.getInstance().getStage().close();
+            GUIManager.getInstance().reset();
+            App.newGame(boardSize, bombCount);
+        });
+
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setRightAnchor(startButton,20.0);
+        anchorPane.setLeftAnchor(startButton, 20.0);
+        anchorPane.setRightAnchor(difficultyCB,20.0);
+        anchorPane.setLeftAnchor(difficultyCB, 20.0);
+        anchorPane.setTopAnchor(difficultyCB, 30.0);
+        anchorPane.setRightAnchor(sizeCB,20.0);
+        anchorPane.setLeftAnchor(sizeCB, 20.0);
+        anchorPane.setTopAnchor(sizeCB, 60.0);
+        anchorPane.getChildren().add(startButton);
+        anchorPane.getChildren().add(sizeCB);
+        anchorPane.getChildren().add(difficultyCB);
+
+        Scene scene = new Scene(anchorPane, 288, 288);
+        GUIManager.getInstance().getStage().setScene(scene);
+    }
+
+    public static void setBoardSize(int size){
+        boardSize = size;
+    }
+    public static void setBombCount(int count) {
+        bombCount = count;
+    }
+
+
 }
