@@ -98,6 +98,7 @@ public class Game {
 
             Button restartButton = new Button();
             restartButton.setText("Restart");
+            restartButton.setMinWidth(80);
 
             restartButton.setOnAction(eventButtonClick -> {
                 GUIManager.getInstance().getStage().close();
@@ -108,6 +109,7 @@ public class Game {
 
             Button exitButton = new Button();
             exitButton.setText("Exit");
+            exitButton.setMinWidth(80);
 
 
             exitButton.setOnAction(eventButtonClick -> {
@@ -116,19 +118,19 @@ public class Game {
 
             AnchorPane anchorPane = new AnchorPane();
 
-            anchorPane.setRightAnchor(exitButton,20.0);
-            anchorPane.setLeftAnchor(exitButton, 20.0);
-            anchorPane.setTopAnchor(exitButton, 70.0);
+            AnchorPane.setRightAnchor(exitButton,20.0);
+            //anchorPane.setLeftAnchor(exitButton, 20.0);
+            AnchorPane.setBottomAnchor(exitButton, 70.0);
 
-            anchorPane.setRightAnchor(restartButton,20.0);
-            anchorPane.setLeftAnchor(restartButton, 20.0);
-            anchorPane.setTopAnchor(restartButton, 30.0);
+            AnchorPane.setRightAnchor(restartButton,20.0);
+            //anchorPane.setLeftAnchor(restartButton, 20.0);
+            AnchorPane.setBottomAnchor(restartButton, 30.0);
 
             anchorPane.getChildren().add(imageView);
             anchorPane.getChildren().add(restartButton);
             anchorPane.getChildren().add(exitButton);
 
-            Scene scene = new Scene(anchorPane, 288, 288);
+            Scene scene = new Scene(anchorPane, 800, 600);
             GUIManager.getInstance().getStage().setScene(scene);
             tile.setRevealed();
 
