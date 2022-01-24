@@ -116,7 +116,7 @@ public class GUIManager {
         startButton.setOnAction(eventButtonClick -> {
 
                 if(sizeCB.getValue() == "small") setBoardSize(10);
-                else if(sizeCB.getValue() == "large") setBoardSize(25);
+                else if(sizeCB.getValue() == "large") setBoardSize(23);
                 else setBoardSize(18);
 
                 if (sizeCB.getValue() == "small"){
@@ -124,9 +124,9 @@ public class GUIManager {
                     else if(difficultyCB.getValue() == "hard") setBombCount(20);
                     else setBombCount(15);
                 } else if (sizeCB.getValue() == "large"){
-                    if(difficultyCB.getValue() == "easy") setBombCount(78);
-                    else if(difficultyCB.getValue() == "hard") setBombCount(125);
-                    else setBombCount(93);
+                    if(difficultyCB.getValue() == "easy") setBombCount(66);
+                    else if(difficultyCB.getValue() == "hard") setBombCount(105);
+                    else setBombCount(79);
                 }else{
                     if(difficultyCB.getValue() == "easy") setBombCount(40);
                     else if(difficultyCB.getValue() == "hard") setBombCount(65);

@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -95,18 +96,37 @@ public class Game {
             ImageView imageView = new ImageView();
             imageView.setImage(GUIManager.getInstance().getImage("lose"));
 
-            Button button = new Button();
-            button.setText("Restart");
+            Button restartButton = new Button();
+            restartButton.setText("Restart");
 
-            button.setOnAction(eventButtonClick -> {
+            restartButton.setOnAction(eventButtonClick -> {
                 GUIManager.getInstance().getStage().close();
                 GUIManager.getInstance().reset();
                 App.newGame();
 
             });
+
+            Button exitButton = new Button();
+            exitButton.setText("Exit");
+
+
+            exitButton.setOnAction(eventButtonClick -> {
+                Platform.exit();
+            });
+
             AnchorPane anchorPane = new AnchorPane();
+
+            anchorPane.setRightAnchor(exitButton,20.0);
+            anchorPane.setLeftAnchor(exitButton, 20.0);
+            anchorPane.setTopAnchor(exitButton, 70.0);
+
+            anchorPane.setRightAnchor(restartButton,20.0);
+            anchorPane.setLeftAnchor(restartButton, 20.0);
+            anchorPane.setTopAnchor(restartButton, 30.0);
+
             anchorPane.getChildren().add(imageView);
-            anchorPane.getChildren().add(button);
+            anchorPane.getChildren().add(restartButton);
+            anchorPane.getChildren().add(exitButton);
 
             Scene scene = new Scene(anchorPane, 288, 288);
             GUIManager.getInstance().getStage().setScene(scene);
@@ -126,19 +146,36 @@ public class Game {
             ImageView imageView = new ImageView();
             imageView.setImage(GUIManager.getInstance().getImage("won"));
 
-            Button button = new Button();
-            button.setText("Restart");
+            Button restartButton = new Button();
+            restartButton.setText("Restart");
 
-            button.setOnAction(eventButtonClick -> {
+            restartButton.setOnAction(eventButtonClick -> {
                 GUIManager.getInstance().getStage().close();
                 GUIManager.getInstance().reset();
                 App.newGame();
+            });
 
+            Button exitButton = new Button();
+            exitButton.setText("Exit");
+
+
+            exitButton.setOnAction(eventButtonClick -> {
+                Platform.exit();
             });
 
             AnchorPane anchorPane = new AnchorPane();
+
+            anchorPane.setRightAnchor(exitButton,20.0);
+            anchorPane.setLeftAnchor(exitButton, 20.0);
+            anchorPane.setTopAnchor(exitButton, 70.0);
+
+            anchorPane.setRightAnchor(restartButton,20.0);
+            anchorPane.setLeftAnchor(restartButton, 20.0);
+            anchorPane.setTopAnchor(restartButton, 30.0);
+
             anchorPane.getChildren().add(imageView);
-            anchorPane.getChildren().add(button);
+            anchorPane.getChildren().add(restartButton);
+            anchorPane.getChildren().add(exitButton);
 
             Scene scene = new Scene(anchorPane, 288, 288);
 

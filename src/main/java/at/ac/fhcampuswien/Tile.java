@@ -71,7 +71,7 @@ public class Tile extends ImageView {
         this.setImage(GUIManager.getInstance().getImage("unrevealed"));
 
         this.setX(xPosition * 32);
-        this.setY(yPosition * 32);
+        this.setY((yPosition * 32)+60);
 
         GUIManager.getInstance().getAnchorPane().getChildren().add(this);
     }
