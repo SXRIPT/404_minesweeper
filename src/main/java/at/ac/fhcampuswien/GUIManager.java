@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien;
 
+import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -100,17 +101,17 @@ public class GUIManager {
         Button startButton = new Button();
         startButton.setText("Start");
 
-        ChoiceBox difficultyCB = new ChoiceBox();
-        ChoiceBox sizeCB = new ChoiceBox();
+        ChoiceBox difficultyCB = new ChoiceBox(FXCollections.observableArrayList("easy", "normal", "hard"));
+        ChoiceBox sizeCB = new ChoiceBox(FXCollections.observableArrayList("small", "medium", "large"));
 
 
-        String[] sizesForCB = {"small", "medium", "large"};
+        // String[] sizesForCB = {"small", "medium", "large"};
 
-        String[] difficultiesForCB = {"easy", "normal", "hard"};
+        // String[] difficultiesForCB = {"easy", "normal", "hard"};
 
-        sizeCB.getItems().addAll(sizesForCB);
+        // sizeCB.getItems().addAll(sizesForCB);
 
-        difficultyCB.getItems().addAll(difficultiesForCB);
+        // difficultyCB.getItems().addAll(difficultiesForCB);
 
         startButton.setOnAction(eventButtonClick -> {
 
