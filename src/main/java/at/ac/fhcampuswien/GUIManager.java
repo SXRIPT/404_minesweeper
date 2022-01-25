@@ -23,7 +23,7 @@ public class GUIManager {
     private Stage stage;
     private Scene scene;
     private static GUIManager instance;
-    private HashMap<String, Image> graphics; //images will be saved in HashMap
+    private final HashMap<String, Image> graphics; //images will be saved in HashMap
     public static Label flagCount = new Label(); //public flagCount for access of the text
 
 
@@ -105,24 +105,24 @@ public class GUIManager {
         startButton.setText("Start");
 
         Label sizeLabel = new Label();
-        sizeLabel.setText("Size of gameboard:");
+        sizeLabel.setText("Size of the game board:");
 
         Label difficultyLabel = new Label();
         difficultyLabel.setText("Difficulty:");
 
-        ChoiceBox<String> difficultyCB = new ChoiceBox<String>(FXCollections.observableArrayList("easy", "normal", "hard"));
+        ChoiceBox<String> difficultyCB = new ChoiceBox<>(FXCollections.observableArrayList("easy", "normal", "hard"));
         difficultyCB.setValue("normal"); //default setting
-        ChoiceBox<String> sizeCB = new ChoiceBox<String>(FXCollections.observableArrayList("small", "medium", "large"));
+        ChoiceBox<String> sizeCB = new ChoiceBox<>(FXCollections.observableArrayList("small", "medium", "large"));
         sizeCB.setValue("medium"); //default setting
 
         startButton.setOnAction(eventButtonClick -> { //defines boardSize and bombCount
 
-                if(sizeCB.getValue() == "small"){
+                if(sizeCB.getValue().equals("small")){
                     setBoardSize(10);
                     setWidth(10*32);
                     setHeight(10*32+20);
                 }
-                else if(sizeCB.getValue() == "large"){
+                else if(sizeCB.getValue().equals("large")){
                     setBoardSize(23);
                     setWidth(23*32);
                     setHeight(23*32+20);
@@ -133,17 +133,17 @@ public class GUIManager {
                     setHeight(18*32+20);
                 }
 
-                if (sizeCB.getValue() == "small"){
-                    if(difficultyCB.getValue() == "easy") setBombCount(12);
-                    else if(difficultyCB.getValue() == "hard") setBombCount(20);
+                if (sizeCB.getValue().equals("small")){
+                    if(difficultyCB.getValue().equals("easy")) setBombCount(12);
+                    else if(difficultyCB.getValue().equals("hard")) setBombCount(20);
                     else setBombCount(15);
-                } else if (sizeCB.getValue() == "large"){
-                    if(difficultyCB.getValue() == "easy") setBombCount(66);
-                    else if(difficultyCB.getValue() == "hard") setBombCount(105);
+                } else if (sizeCB.getValue().equals("large")){
+                    if(difficultyCB.getValue().equals("easy")) setBombCount(66);
+                    else if(difficultyCB.getValue().equals("hard")) setBombCount(105);
                     else setBombCount(79);
                 }else{
-                    if(difficultyCB.getValue() == "easy") setBombCount(40);
-                    else if(difficultyCB.getValue() == "hard") setBombCount(65);
+                    if(difficultyCB.getValue().equals("easy")) setBombCount(40);
+                    else if(difficultyCB.getValue().equals("hard")) setBombCount(65);
                     else setBombCount(49);
                 }
 
