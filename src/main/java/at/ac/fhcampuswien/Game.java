@@ -84,8 +84,7 @@ public class Game {
         } else if (!tile.isFlagged() && !tile.isRevealed()) { //checks for flag or if the tile is already revealed
                 revealTile(tile);
             }
-
-
+        
         if(hasWon()){
             endScreen();
         }
@@ -135,6 +134,7 @@ public class Game {
                 new KeyFrame(Duration.millis(1500),
                         event -> GUIManager.getInstance().getStage().setScene(scene)));
         if(lost)loseDelay.play();
+        else GUIManager.getInstance().getStage().setScene(scene);
 
     }
 }
