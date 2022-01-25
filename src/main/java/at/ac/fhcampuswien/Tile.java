@@ -21,18 +21,18 @@ public class Tile extends ImageView {
         setUpTile();
     }
 
-    public void setFlagged() {
+    public void setFlagged() { //gets called when flag is set or unset / changes flag status / updates GUI flag counter
         isFlagged = !isFlagged;
         if (isFlagged) {
             this.setImage(GUIManager.getInstance().getImage("flag"));
-            GUIManager.minusTextField();
+            GUIManager.minusLabel();
         } else {
             this.setImage(GUIManager.getInstance().getImage("unrevealed"));
-            GUIManager.plusTextField();
+            GUIManager.plusLabel();
         }
     }
 
-    public void setRevealed() {
+    public void setRevealed() { //reveals a tile when clicked on / changes image to revealed image
         isRevealed = true;
         this.setImage(revealedImage);
     }
@@ -61,7 +61,7 @@ public class Tile extends ImageView {
         return yPosition;
     }
 
-    private void setUpTile() {
+    private void setUpTile() { //sets up different tile images and hides them
         if (isBomb) {
             revealedImage = GUIManager.getInstance().getImage("bomb");
         } else if (bombsNearby == 0) {
@@ -70,11 +70,12 @@ public class Tile extends ImageView {
             revealedImage = GUIManager.getInstance().getImage(Integer.toString(bombsNearby));
         }
 
-        this.setImage(GUIManager.getInstance().getImage("unrevealed"));
+        this.setImage(GUIManager.getInstance().getImage("unrevealed")); //hides tile images
 
+        //defines position of tile
         this.setX(xPosition * 32);
-        this.setY((yPosition * 32)+20);
+        this.setY((yPosition * 32)+20); //+20 additional space for flag counter
 
-        GUIManager.getInstance().getAnchorPane().getChildren().add(this);
+        GUIManager.getInstance().getAnchorPane().getChildren().add(this); //adds tile to anchorpane
     }
 }

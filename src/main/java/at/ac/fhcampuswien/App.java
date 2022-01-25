@@ -10,11 +10,8 @@ public class App extends Application {
 
     private static int boardSize;
     private static int bombCount;
-    public static void main(String[] args){
-        //Game game = new Game(16, 40);
+    public static void main(String[] args){ //launches game
         launch();
-        //game.start();
-        //launch(args);
     }
 
     public static void newGame(int size, int count) {
@@ -22,18 +19,14 @@ public class App extends Application {
         boardSize = size;
         Stage primaryStage = GUIManager.getInstance().getStage();
         new Game(boardSize, bombCount);
+        //sets title and icon for gameWindow
         primaryStage.setTitle("404_Minesweeper");
         primaryStage.getIcons().add(new Image("file:src/main/resources/graphics/bomb.png"));
         primaryStage.show();
-        GUIManager.createLabel();
     }
 
-    public static void newGame() {
-        Stage primaryStage = GUIManager.getInstance().getStage();
-        new Game(boardSize, bombCount);
-        primaryStage.setTitle("404_Minesweeper");
-        primaryStage.getIcons().add(new Image("file:src/main/resources/graphics/bomb.png"));
-        primaryStage.show();
+    public static void newGame() { //if newGame is called from restart button restart with same size and difficulty
+        newGame(boardSize,bombCount);
     }
     public static int getBombCount(){
         return bombCount;
@@ -43,19 +36,10 @@ public class App extends Application {
     public void start(Stage primaryStage) {
         primaryStage = GUIManager.getInstance().getStage();
 
-        // new Game(24, 40);
         GUIManager.startUp();
+        //sets title and icon for size and difficulty screen
         primaryStage.setTitle("404_Minesweeper");
         primaryStage.getIcons().add(new Image("file:src/main/resources/graphics/bomb.png"));
         primaryStage.show();
     }
-
-
-
-
-
-
-
-
-
 }

@@ -23,8 +23,8 @@ public class GUIManager {
     private Stage stage;
     private Scene scene;
     private static GUIManager instance;
-    private HashMap<String, Image> graphics;
-    public static Label flagCount = new Label();
+    private HashMap<String, Image> graphics; //images will be saved in HashMap
+    public static Label flagCount = new Label(); //public flagCount for access of the text
 
 
 
@@ -33,7 +33,7 @@ public class GUIManager {
      * -> Singleton class - we don't want more than one GUIManager object to exist at any time.
      */
     private GUIManager() {
-
+        //loading images
         graphics = new HashMap<>();
         try {
             loadImages();
@@ -44,12 +44,12 @@ public class GUIManager {
         anchorPane = new AnchorPane();
         scene = new Scene(anchorPane, width, height);
         stage = new Stage();
-        // stage.setResizable(false);
         stage.setScene(scene);
+        //icon for Application
         stage.getIcons().add(new Image("file:src/main/resources/graphics/bomb.png"));
     }
 
-    private void loadImages() throws FileNotFoundException {
+    private void loadImages() throws FileNotFoundException { //loads all images
         InputStream stream = new FileInputStream("src/main/resources/graphics/unrevealed.png");
         graphics.put("unrevealed", new Image(stream));
         stream = new FileInputStream("src/main/resources/graphics/empty.png");
@@ -62,15 +62,15 @@ public class GUIManager {
         graphics.put("x", new Image(stream));
         stream = new FileInputStream("src/main/resources/graphics/won.png");
         graphics.put("won", new Image(stream));
-        stream = new FileInputStream("src/main/resources/graphics/lose.png");
-        graphics.put("lose", new Image(stream));
+        stream = new FileInputStream("src/main/resources/graphics/lost.png");
+        graphics.put("lost", new Image(stream));
         for (int i = 1; i < 8; i++) {
             stream = new FileInputStream("src/main/resources/graphics/" + i + ".png");
             graphics.put(Integer.toString(i), new Image(stream));
         }
     }
 
-    public static GUIManager getInstance(){
+    public static GUIManager getInstance(){ //if no GUIManager exists - one will be created
         if (instance == null) {
             instance = new GUIManager();
         }
@@ -81,9 +81,7 @@ public class GUIManager {
         return stage;
     }
 
-    public void setStage(Stage stage) { this.stage = stage; }
-
-    public void reset() {
+    public void reset() { //reset for restart button
         anchorPane = new AnchorPane();
         scene = new Scene(anchorPane, width, height);
         stage = new Stage();
@@ -99,32 +97,25 @@ public class GUIManager {
             return graphics.get(name);
         }
         else {
-            return graphics.get("x");
+            return graphics.get("x"); // if graphic is missing - red x will be displayed
         }
     }
-    public static void startUp(){
+    public static void startUp(){ //startup screen - choose size and difficulty
         Button startButton = new Button();
         startButton.setText("Start");
 
         Label sizeLabel = new Label();
-        sizeLabel.setText("Groesse des Spielfeldes:");
+        sizeLabel.setText("Size of gameboard:");
 
         Label difficultyLabel = new Label();
-        difficultyLabel.setText("Schwierigkeit:");
+        difficultyLabel.setText("Difficulty:");
 
         ChoiceBox difficultyCB = new ChoiceBox(FXCollections.observableArrayList("easy", "normal", "hard"));
+        difficultyCB.setValue("normal"); //default setting
         ChoiceBox sizeCB = new ChoiceBox(FXCollections.observableArrayList("small", "medium", "large"));
+        sizeCB.setValue("medium"); //default setting
 
-
-        // String[] sizesForCB = {"small", "medium", "large"};
-
-        // String[] difficultiesForCB = {"easy", "normal", "hard"};
-
-        // sizeCB.getItems().addAll(sizesForCB);
-
-        // difficultyCB.getItems().addAll(difficultiesForCB);
-
-        startButton.setOnAction(eventButtonClick -> {
+        startButton.setOnAction(eventButtonClick -> { //defines boardSize and bombCount
 
                 if(sizeCB.getValue() == "small"){
                     setBoardSize(10);
@@ -160,22 +151,23 @@ public class GUIManager {
             GUIManager.getInstance().reset();
             App.newGame(boardSize, bombCount);
         });
-
+        //position of buttons and labels
         AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setRightAnchor(startButton,20.0);
-        anchorPane.setLeftAnchor(startButton, 20.0);
-        anchorPane.setTopAnchor(startButton, 5.0);
-        anchorPane.setRightAnchor(difficultyCB,20.0);
-        anchorPane.setLeftAnchor(difficultyCB, 20.0);
-        anchorPane.setTopAnchor(difficultyCB, 65.0);
-        anchorPane.setRightAnchor(sizeCB,20.0);
-        anchorPane.setLeftAnchor(sizeCB, 20.0);
-        anchorPane.setTopAnchor(sizeCB, 125.0);
-        anchorPane.setTopAnchor(difficultyLabel,40.0);
-        anchorPane.setTopAnchor(sizeLabel,100.0);
-        anchorPane.setLeftAnchor(difficultyLabel, 20.0);
-        anchorPane.setLeftAnchor(sizeLabel,20.0);
+        AnchorPane.setRightAnchor(startButton,20.0);
+        AnchorPane.setLeftAnchor(startButton, 20.0);
+        AnchorPane.setTopAnchor(startButton, 5.0);
+        AnchorPane.setRightAnchor(difficultyCB,20.0);
+        AnchorPane.setLeftAnchor(difficultyCB, 20.0);
+        AnchorPane.setTopAnchor(difficultyCB, 65.0);
+        AnchorPane.setRightAnchor(sizeCB,20.0);
+        AnchorPane.setLeftAnchor(sizeCB, 20.0);
+        AnchorPane.setTopAnchor(sizeCB, 125.0);
+        AnchorPane.setTopAnchor(difficultyLabel,40.0);
+        AnchorPane.setTopAnchor(sizeLabel,100.0);
+        AnchorPane.setLeftAnchor(difficultyLabel, 20.0);
+        AnchorPane.setLeftAnchor(sizeLabel,20.0);
 
+        //adds buttons and labels to anchorPane
         anchorPane.getChildren().add(startButton);
         anchorPane.getChildren().add(sizeCB);
         anchorPane.getChildren().add(difficultyCB);
@@ -192,39 +184,35 @@ public class GUIManager {
     public static void setBombCount(int count) {
         bombCount = count;
     }
-    public static void plusTextField(){
+    public static void plusLabel(){ //adds 1 to flagCount label
         int a = Integer.parseInt(flagCount.getText());
         a ++;
         flagCount.setText(String.valueOf(a));
     }
-    public static void minusTextField(){
+    public static void minusLabel(){ //subtracts 1 from flagCount label
         int a = Integer.parseInt(flagCount.getText());
         a --;
         flagCount.setText(String.valueOf(a));
     }
 
-    public static void createLabel(){
+    public static void createLabel(){ //creates flagCount label
 
         Label flagCountText = new Label();
-        flagCountText.setText("Anzahl der verbleibenden Bomben:");
-        int initalBombs = App.getBombCount();
-        flagCount.setText(String.valueOf(initalBombs));
+        flagCountText.setText("Number of remaining flags:");
+        int initialBombs = App.getBombCount();
+        flagCount.setText(String.valueOf(initialBombs));
 
-        // flagCountText.setPrefColumnCount(17);
-
-        // flagCount.setPrefColumnCount(2);
-
-        GUIManager.getInstance().getAnchorPane().setLeftAnchor(flagCount,210.0);
+        AnchorPane.setLeftAnchor(flagCount,210.0);
 
         GUIManager.getInstance().getAnchorPane().getChildren().add(flagCountText);
         GUIManager.getInstance().getAnchorPane().getChildren().add(flagCount);
     }
     public static  void setWidth(int a){
         width = a;
-    }
+    } //sets stageWidth to boardWidth
     public static void setHeight(int a){
         height = a;
-    }
+    }// sets stageHeight to boardHeight
 
 
 }
