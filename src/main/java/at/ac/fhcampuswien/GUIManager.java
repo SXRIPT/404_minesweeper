@@ -113,7 +113,9 @@ public class GUIManager {
         difficultyLabel.setText("Schwierigkeit:");
 
         ChoiceBox difficultyCB = new ChoiceBox(FXCollections.observableArrayList("easy", "normal", "hard"));
+        difficultyCB.setValue("normal");
         ChoiceBox sizeCB = new ChoiceBox(FXCollections.observableArrayList("small", "medium", "large"));
+        sizeCB.setValue("medium");
 
 
         // String[] sizesForCB = {"small", "medium", "large"};
