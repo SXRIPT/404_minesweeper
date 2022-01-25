@@ -21,6 +21,7 @@ public class App extends Application {
         Stage primaryStage = GUIManager.getInstance().getStage();
         new Game(boardSize, bombCount);
         primaryStage.setTitle("404_Minesweeper");
+        primaryStage.getIcons().add(new Image("file:src/main/resources/graphics/bomb.png"));
         primaryStage.show();
         GUIManager.createLabel();
     }
@@ -29,6 +30,7 @@ public class App extends Application {
         Stage primaryStage = GUIManager.getInstance().getStage();
         new Game(boardSize, bombCount);
         primaryStage.setTitle("404_Minesweeper");
+        primaryStage.getIcons().add(new Image("file:src/main/resources/graphics/bomb.png"));
         primaryStage.show();
     }
     public static int getBombCount(){
@@ -42,6 +44,7 @@ public class App extends Application {
         // new Game(24, 40);
         GUIManager.startUp();
         primaryStage.setTitle("404_Minesweeper");
+        primaryStage.getIcons().add(new Image("file:src/main/resources/graphics/bomb.png"));
         primaryStage.show();
     }
 
