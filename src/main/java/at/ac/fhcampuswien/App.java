@@ -22,6 +22,7 @@ public class App extends Application {
         new Game(boardSize, bombCount);
         primaryStage.setTitle("404_Minesweeper");
         primaryStage.show();
+        GUIManager.createLabel();
     }
 
     public static void newGame() {
@@ -29,6 +30,9 @@ public class App extends Application {
         new Game(boardSize, bombCount);
         primaryStage.setTitle("404_Minesweeper");
         primaryStage.show();
+    }
+    public static int getBombCount(){
+        return bombCount;
     }
 
     @Override

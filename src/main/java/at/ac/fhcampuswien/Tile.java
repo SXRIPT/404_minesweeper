@@ -25,8 +25,10 @@ public class Tile extends ImageView {
         isFlagged = !isFlagged;
         if (isFlagged) {
             this.setImage(GUIManager.getInstance().getImage("flag"));
+            GUIManager.minusTextField();
         } else {
             this.setImage(GUIManager.getInstance().getImage("unrevealed"));
+            GUIManager.plusTextField();
         }
     }
 
@@ -71,7 +73,7 @@ public class Tile extends ImageView {
         this.setImage(GUIManager.getInstance().getImage("unrevealed"));
 
         this.setX(xPosition * 32);
-        this.setY((yPosition * 32)+60);
+        this.setY((yPosition * 32)+20);
 
         GUIManager.getInstance().getAnchorPane().getChildren().add(this);
     }
