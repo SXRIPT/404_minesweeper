@@ -8,42 +8,43 @@ public class Board {
     private final Tile[][] tiles;
     private final int boardSize;
     private final int bombCount;
-    private int revealCount = 0;
+    private int revealCount = 0; //count of revealed tiles
 
-    public Board(final int boardSize, final int bombCount) {
+    public Board(final int boardSize, final int bombCount) { //when a new board is initialized bombs are placed and the board gets filled
         this.boardSize = boardSize;
         this.bombCount = bombCount;
         this.tiles = new Tile[boardSize][boardSize];
 
-        placeRandomBombs();
-        fillBoard();
+
+        placeRandomBombs(); //placing bombs on the board
+        fillBoard(); //completing the rest of the board
     }
 
-    private void placeRandomBombs() {
+    private void placeRandomBombs() { //selects random tiles and sets them as bombs
         int bombsPlaced = 0;
-        while (bombsPlaced < bombCount) {
+        while (bombsPlaced < bombCount) { //places bombs until the bombCount is reached
             int row = RND.nextInt(boardSize);
             int col = RND.nextInt(boardSize);
 
             // Ensure that a bomb is not placed on a Tile with a bomb
             if (tiles[row][col] == null || !tiles[row][col].isBomb()) {
-                tiles[row][col] = new Tile(true, Tile.BOMB_VALUE);
+                tiles[row][col] = new Tile(col, row, true, Tile.BOMB_VALUE); //creates tiles with bombs
                 bombsPlaced++;
             }
         }
     }
 
-    private void fillBoard() {
+    private void fillBoard() { //creates tiles where no bombs are placed
         for (int y = 0; y < boardSize; y++) {
             for (int x = 0; x < boardSize; x++) {
                 if (tiles[y][x] == null) {
-                    tiles[y][x] = new Tile(false, checkSurroundings(y, x));
+                    tiles[y][x] = new Tile(x, y,false, checkSurroundings(y, x));
                 }
             }
         }
     }
 
-    // Checks adjacent fields for bombs
+    // Checks adjacent fields for bombs and returns int with bombCount
     private int checkSurroundings(final int yPosition, final int xPosition) {
         int count = 0;
         // If the Tile itself is a bomb it should not be overwritten
@@ -77,44 +78,6 @@ public class Board {
 
     public void increaseRevealCount() {
         this.revealCount++;
-    }
+    } //increases count of revealed tiles
 
-
-    public void printGrid() {
-        System.out.print("     ");
-        for (int i = 0; i < tiles.length; i++) {
-            System.out.printf("%2d ", i);
-        }
-        System.out.println();
-        System.out.print("      ");
-        System.out.println("-  ".repeat(tiles.length));
-    }
-
-    public void printTileCheatBoard() {
-        printGrid();
-        for (int y = 0; y < boardSize; y++) {
-            System.out.printf("%2d |  ", y);
-            for (int x = 0; x < boardSize; x++) {
-                System.out.print(tiles[y][x].getBombsNearby());
-
-                System.out.print((x + 1) % boardSize == 0 ? System.lineSeparator() : "  ");
-            }
-        }
-    }
-
-    public void printTileBoard() {
-        printGrid();
-        for (int y = 0; y < boardSize; y++) {
-            System.out.printf("%2d |  ", y);
-            for (int x = 0; x < boardSize; x++) {
-                if (tiles[y][x].isRevealed()) {
-                    System.out.print(tiles[y][x].getBombsNearby());
-                } else {
-                    System.out.print(tiles[y][x].isFlagged() ? "F" : "X");
-                }
-
-                System.out.print((x + 1) % boardSize == 0 ? System.lineSeparator() : "  ");
-            }
-        }
-    }
 }

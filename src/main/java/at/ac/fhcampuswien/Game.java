@@ -1,8 +1,17 @@
 package at.ac.fhcampuswien;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
+
+import java.util.*;
 
 public class Game {
     // Directions for all adjacent fields of a Tile
@@ -11,160 +20,122 @@ public class Game {
     private final Board board;
     private final int MAX_SIZE;
     private boolean lost = false;
-    private boolean error = false;
 
     public Game(final int boardSize, final int bombCount) {
         this.board = new Board(boardSize, bombCount);
         MAX_SIZE = boardSize;
+        addOnClickToTiles();
+        GUIManager.createLabel(); //label for flagCount
     }
 
-    public void start() {
-        board.printTileCheatBoard();
-        System.out.println();
-        while (!lost && hasNotWon()) {
-            if (!error) {
-                board.printTileBoard();
-            } else {
-                error = false;
+    private void addOnClickToTiles() { //action handleReveal is added to each tile
+        for (int row = 0; row < board.getBoard().length; row++) {
+            for (int col = 0; col < board.getBoard()[row].length; col++) {
+                board.getBoard()[row][col].setOnMouseClicked(this::handleReveal);
             }
-            gameLogic();
-        }
-        if (!lost) {
-            printWinScreen();
         }
     }
 
-    private boolean hasNotWon() { return board.getRevealCount() + board.getBombCount() != MAX_SIZE * MAX_SIZE; }
+    private boolean hasWon() { return board.getRevealCount() + board.getBombCount() == MAX_SIZE * MAX_SIZE; } //checks if player has won
 
-    private void revealTile(final Tile tile) {
-        if (!tile.isRevealed())  board.increaseRevealCount();
+    private void revealTile(final Tile tile) { //reveals the tile and increases the revealCount
+        if (!tile.isRevealed()) board.increaseRevealCount();
         tile.setRevealed();
     }
 
-    private void revealZeroFields(final int x, final int y) {
-        if (isNotInBound(x, y)) return;
+    private void revealZeroFields(final int x, final int y) { //checks for adjacent empty tiles if empty tile is opened and reveals them
+        if (isNotInBound(x, y)) return; //checks for bounds of the board
 
         Tile tile = board.getBoard()[y][x];
-        if (tile.isRevealed() || tile.isBomb()) return;
+        if (tile.isRevealed() || tile.isBomb()) return; //checks if tile is already revealed or is a bomb
 
         revealTile(tile);
-        if (tile.getBombsNearby() > 0) return;
+        if (tile.getBombsNearby() > 0) return; //if tile has a number stop searching in that direction
 
         // Calls revealZeroFields for all adjacent Tiles
         Arrays.stream(DIRECTIONS).forEach(direction -> revealZeroFields(x + direction[0], y + direction[1]));
     }
 
-    private boolean isNotInBound(final int x, final int y) {
+    private boolean isNotInBound(final int x, final int y) { //checks if tile is still in bounds
         return x < 0 || x >= MAX_SIZE || y < 0 || y >= MAX_SIZE;
     }
 
-    private void handleReveal(final Tile tile, final int x, final int y) {
+    private void handleReveal(MouseEvent event) {
+        if (!(event.getSource() instanceof Tile)) return; //checks if the object clicked is a tile and returns if not a tile
+        if (lost) return;
+
+        Tile tile = (Tile) event.getSource(); //casts object to tile
+        // final int x, final int y
         int bombsNearBy = tile.getBombsNearby();
 
-        if (bombsNearBy == 0 && !tile.isRevealed() && !tile.isFlagged()) {
-            revealZeroFields(x, y);
-        } else if (bombsNearBy == Tile.BOMB_VALUE && !tile.isFlagged()) {
-            printLoseScreen();
+        if (event.getButton().equals(MouseButton.SECONDARY) && !tile.isRevealed()) { //right click flags the tile
+            tile.setFlagged();
+            return;
+        }
+
+        if (bombsNearBy == 0 && !tile.isRevealed() && !tile.isFlagged()) { // if opened tile is empty - open surrounding tiles
+            revealZeroFields(tile.getxPosition(), tile.getyPosition());
+        } else if (bombsNearBy == Tile.BOMB_VALUE && !tile.isFlagged()) { // if opened tile is a bomb - show losing screen
+
+            tile.setRevealed();
             lost = true;
-        } else {
-            if (!tile.isFlagged() && !tile.isRevealed()) {
+            endScreen();
+
+        } else if (!tile.isFlagged() && !tile.isRevealed()) { //checks for flag or if the tile is already revealed
                 revealTile(tile);
-            } else {
-                System.out.println("Tile is flagged or revealed");
-                error = true;
             }
+
+
+        if(hasWon()){
+            endScreen();
         }
     }
 
-    private int inputValidation(final String displayText) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print(displayText);
-        int number;
-        while (true) {
-            if (!scanner.hasNextInt()) {
-                scanner.nextLine();
-                System.out.println("Input is not a valid number");
-                System.out.print(displayText);
-            } else {
-                number = scanner.nextInt();
-                if (number < 0 || number >= MAX_SIZE) {
-                    System.out.println("Input is too big or too small");
-                    System.out.print(displayText);
-                } else {
-                    break;
-                }
-            }
-        }
-        return number;
-    }
+    private void endScreen(){ //prints endScreen depending on outcome
 
+        ImageView imageView = new ImageView();
+        if(lost) imageView.setImage(GUIManager.getInstance().getImage("lost"));
+        else imageView.setImage(GUIManager.getInstance().getImage("won"));
 
-    private void gameLogic() {
-        Scanner scanner = new Scanner(System.in);
-        List<String> options = Arrays.asList("a", "b");
-        while (true) {
+        //restart and exit buttons
+        Button restartButton = new Button();
+        restartButton.setText("Restart");
+        restartButton.setMinWidth(80);
 
-            System.out.println("a) Feld aufdecken");
-            System.out.println("b) Flag setzen");
-            String option = "";
+        restartButton.setOnAction(eventButtonClick -> {
+            GUIManager.getInstance().getStage().close();
+            GUIManager.getInstance().reset();
+            App.newGame();
+        });
 
-            while (!options.contains(option)) {
-                System.out.print("Pick a option: ");
-                if (scanner.hasNextLine()) option = scanner.nextLine();
-            }
+        Button exitButton = new Button();
+        exitButton.setText("Exit");
+        exitButton.setMinWidth(80);
 
-            int x = inputValidation("Input X: ");
-            int y = inputValidation("Input Y: ");
+        exitButton.setOnAction(eventButtonClick -> Platform.exit());
 
+        //position of buttons
+        AnchorPane anchorPane = new AnchorPane();
 
-            Tile tile = board.getBoard()[y][x];
-            switch (option) {
-                case "a":
-                    handleReveal(tile, x, y);
-                    return;
-                case "b":
-                    if (!tile.isRevealed()) {
-                        tile.setFlagged();
-                    } else {
-                        System.out.println("Tile is revealed");
-                        error = true;
-                    }
-                    return;
-                default:
-                    System.out.println("Invalid Input!");
-                    break;
-            }
-        }
-    }
+        AnchorPane.setRightAnchor(exitButton,20.0);
+        AnchorPane.setBottomAnchor(exitButton, 70.0);
 
-    private void printWinScreen() {
-        System.out.println(" __      __                         __       __   ______   __    __        __ \n" +
-                "/  \\    /  |                       /  |  _  /  | /      \\ /  \\  /  |      /  |\n" +
-                "$$  \\  /$$/______   __    __       $$ | / \\ $$ |/$$$$$$  |$$  \\ $$ |      $$ |\n" +
-                " $$  \\/$$//      \\ /  |  /  |      $$ |/$  \\$$ |$$ |  $$ |$$$  \\$$ |      $$ |\n" +
-                "  $$  $$//$$$$$$  |$$ |  $$ |      $$ /$$$  $$ |$$ |  $$ |$$$$  $$ |      $$ |\n" +
-                "   $$$$/ $$ |  $$ |$$ |  $$ |      $$ $$/$$ $$ |$$ |  $$ |$$ $$ $$ |      $$/ \n" +
-                "    $$ | $$ \\__$$ |$$ \\__$$ |      $$$$/  $$$$ |$$ \\__$$ |$$ |$$$$ |       __ \n" +
-                "    $$ | $$    $$/ $$    $$/       $$$/    $$$ |$$    $$/ $$ | $$$ |      /  |\n" +
-                "    $$/   $$$$$$/   $$$$$$/        $$/      $$/  $$$$$$/  $$/   $$/       $$/ \n" +
-                "                                                                              \n" +
-                "                                                                              \n" +
-                "                                                                              ");
-    }
+        AnchorPane.setRightAnchor(restartButton,20.0);
+        AnchorPane.setBottomAnchor(restartButton, 30.0);
 
-    private void printLoseScreen() {
-        System.out.println(" __      __                         __         ______    ______   ________        __ \n" +
-                "/  \\    /  |                       /  |       /      \\  /      \\ /        |      /  |\n" +
-                "$$  \\  /$$/______   __    __       $$ |      /$$$$$$  |/$$$$$$  |$$$$$$$$/       $$ |\n" +
-                " $$  \\/$$//      \\ /  |  /  |      $$ |      $$ |  $$ |$$ \\__$$/    $$ |         $$ |\n" +
-                "  $$  $$//$$$$$$  |$$ |  $$ |      $$ |      $$ |  $$ |$$      \\    $$ |         $$ |\n" +
-                "   $$$$/ $$ |  $$ |$$ |  $$ |      $$ |      $$ |  $$ | $$$$$$  |   $$ |         $$/ \n" +
-                "    $$ | $$ \\__$$ |$$ \\__$$ |      $$ |_____ $$ \\__$$ |/  \\__$$ |   $$ |          __ \n" +
-                "    $$ | $$    $$/ $$    $$/       $$       |$$    $$/ $$    $$/    $$ |         /  |\n" +
-                "    $$/   $$$$$$/   $$$$$$/        $$$$$$$$/  $$$$$$/   $$$$$$/     $$/          $$/ \n" +
-                "                                                                                     \n" +
-                "                                                                                     \n" +
-                "                                                                                     ");
+        //adds buttons and image to anchorPane
+        anchorPane.getChildren().add(imageView);
+        anchorPane.getChildren().add(restartButton);
+        anchorPane.getChildren().add(exitButton);
+
+        Scene scene = new Scene(anchorPane, 800, 600);
+
+        //delay before loseScreen
+        Timeline loseDelay = new Timeline(
+                new KeyFrame(Duration.millis(1500),
+                        event -> GUIManager.getInstance().getStage().setScene(scene)));
+        if(lost)loseDelay.play();
+
     }
 }
 
