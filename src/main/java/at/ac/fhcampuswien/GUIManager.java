@@ -46,6 +46,7 @@ public class GUIManager {
         stage = new Stage();
         // stage.setResizable(false);
         stage.setScene(scene);
+        stage.getIcons().add(new Image("file:src/main/resources/graphics/bomb.png"));
     }
 
     private void loadImages() throws FileNotFoundException {
