@@ -110,9 +110,9 @@ public class GUIManager {
         Label difficultyLabel = new Label();
         difficultyLabel.setText("Difficulty:");
 
-        ChoiceBox difficultyCB = new ChoiceBox(FXCollections.observableArrayList("easy", "normal", "hard"));
+        ChoiceBox<String> difficultyCB = new ChoiceBox<String>(FXCollections.observableArrayList("easy", "normal", "hard"));
         difficultyCB.setValue("normal"); //default setting
-        ChoiceBox sizeCB = new ChoiceBox(FXCollections.observableArrayList("small", "medium", "large"));
+        ChoiceBox<String> sizeCB = new ChoiceBox<String>(FXCollections.observableArrayList("small", "medium", "large"));
         sizeCB.setValue("medium"); //default setting
 
         startButton.setOnAction(eventButtonClick -> { //defines boardSize and bombCount
