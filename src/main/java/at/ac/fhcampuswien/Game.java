@@ -11,17 +11,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-import java.util.*;
-
 public class Game {
-    // Directions for all adjacent fields of a Tile
-    private static final int[][] DIRECTIONS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-
     private final Board board;
     private final int MAX_SIZE;
     private boolean lost = false;
 
-    public Game(final int boardSize, final int bombCount) {
+    public Game(int boardSize, int bombCount) {
         this.board = new Board(boardSize, bombCount);
         MAX_SIZE = boardSize;
         addOnClickToTiles();
@@ -38,12 +33,12 @@ public class Game {
 
     private boolean hasWon() { return board.getRevealCount() + board.getBombCount() == MAX_SIZE * MAX_SIZE; } //checks if player has won
 
-    private void revealTile(final Tile tile) { //reveals the tile and increases the revealCount
+    private void revealTile(Tile tile) { //reveals the tile and increases the revealCount
         if (!tile.isRevealed()) board.increaseRevealCount();
         tile.setRevealed();
     }
 
-    private void revealZeroFields(final int x, final int y) { //checks for adjacent empty tiles if empty tile is opened and reveals them
+    private void revealZeroFields(int x, int y) { //checks for adjacent empty tiles if empty tile is opened and reveals them
         if (isNotInBound(x, y)) return; //checks for bounds of the board
 
         Tile tile = board.getBoard()[y][x];
@@ -53,10 +48,14 @@ public class Game {
         if (tile.getBombsNearby() > 0) return; //if tile has a number stop searching in that direction
 
         // Calls revealZeroFields for all adjacent Tiles
-        Arrays.stream(DIRECTIONS).forEach(direction -> revealZeroFields(x + direction[0], y + direction[1]));
+        for (int xPos = x - 1; xPos <= x + 1 ; xPos++) {
+            for (int yPos = y - 1; yPos <= y + 1; yPos++) {
+                revealZeroFields(xPos, yPos);
+            }
+        }
     }
 
-    private boolean isNotInBound(final int x, final int y) { //checks if tile is still in bounds
+    private boolean isNotInBound(int x, int y) { //checks if tile is still in bounds
         return x < 0 || x >= MAX_SIZE || y < 0 || y >= MAX_SIZE;
     }
 
@@ -65,7 +64,6 @@ public class Game {
         if (lost) return;
 
         Tile tile = (Tile) event.getSource(); //casts object to tile
-        // final int x, final int y
         int bombsNearBy = tile.getBombsNearby();
 
         if (event.getButton().equals(MouseButton.SECONDARY) && !tile.isRevealed()) { //right click flags the tile

@@ -186,12 +186,12 @@ public class GUIManager {
     }
     public static void plusLabel(){ //adds 1 to flagCount label
         int a = Integer.parseInt(flagCount.getText());
-        a ++;
+        a++;
         flagCount.setText(String.valueOf(a));
     }
     public static void minusLabel(){ //subtracts 1 from flagCount label
         int a = Integer.parseInt(flagCount.getText());
-        a --;
+        a--;
         flagCount.setText(String.valueOf(a));
     }
 

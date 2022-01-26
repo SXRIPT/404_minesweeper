@@ -13,7 +13,7 @@ public class Tile extends ImageView {
     private Image revealedImage;
     protected static final int BOMB_VALUE = 9;
 
-    public Tile(final int xPosition, final int yPosition, final boolean isBomb, final int bombsNearby) {
+    public Tile(int xPosition, int yPosition, boolean isBomb, int bombsNearby) {
         this.isBomb = isBomb;
         this.bombsNearby = bombsNearby;
         this.xPosition = xPosition;
@@ -73,8 +73,8 @@ public class Tile extends ImageView {
         this.setImage(GUIManager.getInstance().getImage("unrevealed")); //hides tile images
 
         //defines position of tile
-        this.setX(xPosition * 32);
-        this.setY((yPosition * 32)+20); //+20 additional space for flag counter
+        this.setX(xPosition * 32.0);
+        this.setY((yPosition * 32.0) + 20.0); //+20 additional space for flag counter
 
         GUIManager.getInstance().getAnchorPane().getChildren().add(this); //adds tile to anchorpane
     }

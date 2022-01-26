@@ -10,7 +10,7 @@ public class Board {
     private final int bombCount;
     private int revealCount = 0; //count of revealed tiles
 
-    public Board(final int boardSize, final int bombCount) { //when a new board is initialized bombs are placed and the board gets filled
+    public Board(int boardSize, int bombCount) { //when a new board is initialized bombs are placed and the board gets filled
         this.boardSize = boardSize;
         this.bombCount = bombCount;
         this.tiles = new Tile[boardSize][boardSize];
@@ -45,7 +45,7 @@ public class Board {
     }
 
     // Checks adjacent fields for bombs and returns int with bombCount
-    private int checkSurroundings(final int yPosition, final int xPosition) {
+    private int checkSurroundings(int yPosition, int xPosition) {
         int count = 0;
         // If the Tile itself is a bomb it should not be overwritten
         if (tiles[yPosition][xPosition] != null && tiles[yPosition][xPosition].isBomb()) {
